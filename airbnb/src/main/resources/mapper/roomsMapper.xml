@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="roomsMapper">
+	<insert id="create">
+		insert into rooms values('ttt','ttt','ttt')
+	</insert>
 	<select id="read" resultType="string">
-		select name from rooms where rownum=1
+		select location from rooms where name='ttt'
 	</select>
+	<insert id="update">
+		update rooms set location='aaa' where name='ttt'
+	</insert>
+	<insert id="delete">
+		delete from rooms where name='ttt'
+	</insert>
 </mapper>
