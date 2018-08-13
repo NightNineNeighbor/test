@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userMapper">
+	<select id="emailCheck" parameterType="string" resultType="string">
+		select /*+ index(users pk_users) */ email from users where email=#{email} and rownum=1
+	</select>
+	
+	<insert id="insertUser" parameterType="user">
+		insert into users(email, last_name, first_name, password, birth_date, report_cnt, missmatch_cnt, enabled, tel, original_photo, saved_photo, city, intro) 
+		values(#{email}, #{lastName}, #{firstName}, #{password}, #{birthDate}, 0, 0, 'T', '', '', '', '', '')
+	</insert>
+	
+	<insert id="insertAuthority" parameterType="user">
+		insert into authorities(email, authority) values(#{email}, #{authority})
+	</insert>
+	
+	<update id="insertTel" parameterType="user">
+		update users set tel=#{tel} where email=#{email} and rownum=1
+	</update>
+	
+	<select id="selectPhoto" parameterType="string" resultType="user">
+		select saved_photo as savedPhoto, original_photo as originalPhoto from users where email=#{email} and rownum=1
+	</select>
+	
+	<update id="updatePhoto" parameterType="user">
+		update users set original_photo=#{originalPhoto}, saved_photo=#{savedPhoto} where email=#{email} and rownum=1
+	</update>
+	
+	<select id="passwordCheck" parameterType="string" resultType="string">
+		select /*+ index(users pk_users) */ password from users where email=#{email} and rownum=1
+	</select>
+	
+	<select id="readUser" parameterType="string" resultType="user">
+		select /*+ index(users pk_users) */ email, last_name as lastName, first_name as firstName, birth_date as birthDate, tel, city, intro from users where email=#{email} and rownum=1
+	</select>
+	
+	<update id="update" parameterType="user">
+		update users set last_name=#{lastName}, first_name=#{firstName}, city=#{city}, intro=#{intro} where email=#{email} and rownum=1
+	</update>
+	
+	<delete id="deleteUser" parameterType="string">
+		delete from users where email=#{email} and rownum=1
+	</delete>
+	
+	<delete id="deleteAuthority" parameterType="string">
+		delete from authorities where email=#{email} and rownum=1
+	</delete>
+	
+	<update id="missmatch" parameterType="string">
+		update users set missmatch_cnt = missmatch_cnt + 1 where email=#{email} and rownum=1
+	</update>
+	
+	<select id="selectMissmatchCnt" parameterType="string" resultType="int">
+		select /*+ intro(users pk_users) */ missmatch_cnt from users where email=#{email} and rownum=1
+	</select>
+	
+	<update id="resetMissMatch" parameterType="string">
+		update users set missmatch_cnt = 0 where email=#{email} and rownum=1
+	</update>
+	
+	<update id="report" parameterType="string">
+		update users set report_cnt = report_cnt + 1 where email=#{email} and rownum=1
+	</update>
+	
+	<select id="findByReportCnt" parameterType="map" resultType="user">
+		<![CDATA[
+			select * from 
+			(select u.*, rownum rnum from (
+			select /*+ index(users pk_users) */ email, last_name as lastName, first_name as firstName, report_cnt as reportCnt from users where report_cnt>=#{reportCnt}) u
+			where rownum <= #{maxRow})
+			where rnum >= #{minRow}
+		]]>
+	</select>
+	
+	<update id="changeEnabled" parameterType="user">
+		update users set enabled = #{enabled} where email=#{email} and rownum=1
+	</update>
+</mapper>
+
+
+
+
