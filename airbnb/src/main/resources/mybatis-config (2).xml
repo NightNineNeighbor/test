@@ -3,5 +3,6 @@
 <configuration>
 	<typeAliases>
 		<typeAlias alias="user" type="com.airbnb.www.entity.Users" />
+		<typeAlias alias="authority" type="com.airbnb.www.entity.Authorities" />
 	</typeAliases>
 </configuration>

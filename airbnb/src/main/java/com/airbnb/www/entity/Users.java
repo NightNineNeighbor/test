@@ -21,6 +21,4 @@ public class Users {
 	private Integer reportCnt;
 	private Integer missmatchCnt;
 	private Character enabled;
-	
-	private String authority;
 }

@@ -12,13 +12,6 @@ public class UserDto {
 		private String firstName;
 		private String password;
 		private Date birthDate;
-		private String tel;
-	}
-	
-	@Data
-	public static class InsertAuthority {
-		private String email;
-		private String authority;
 	}
 	
 	@Data

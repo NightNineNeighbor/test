@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.airbnb.www.dto.*;
+import com.airbnb.www.entity.*;
 import com.airbnb.www.repository.*;
 
 import lombok.extern.slf4j.*;
@@ -20,6 +21,8 @@ import lombok.extern.slf4j.*;
 public class UserDaoTest {
 	@Autowired
 	private UserDao dao;
+	@Autowired
+	private AuthorityDao autho;
 	@Autowired
 	private PasswordEncoder encoder;
 	
@@ -42,18 +45,12 @@ public class UserDaoTest {
 		user.setFirstName("Summer");
 		user.setLastName("Kim");
 		user.setPassword(encoder.encode("1234"));
-		user.setTel("010-1111-1111");
-		
-		UserDto.InsertAuthority autho= new UserDto.InsertAuthority();
-		autho.setEmail(user.getEmail());
-		autho.setAuthority("ROLE_USER");
 		
 		UserDto.InsertTel tel = new UserDto.InsertTel();
 		tel.setEmail(user.getEmail());
-		tel.setTel(user.getTel());
+		tel.setTel("010-1111-1111");
 		
 		log.info("insertUser : {}", dao.insertUser(user) != 0);
-		log.info("insertAuthority : {}", dao.insertAuthority(autho) != 0);
 		log.info("inserTel : {} ", dao.insertTel(tel) != 0);
 	}
 	
